@@ -10,14 +10,14 @@ class ContextTests: XCTestCase {
     }
 
     func testItAllowsYouToRetrieveAValue() {
-        let name = context["name"] as String!
+        let name = context["name"] as! String
         XCTAssertEqual(name, "Kyle")
     }
 
     func testItAllowsYouToSetValue() {
         context["name"] = "Katie"
 
-        let name = context["name"] as String!
+        let name = context["name"] as! String
         XCTAssertEqual(name, "Katie")
     }
 
@@ -29,7 +29,7 @@ class ContextTests: XCTestCase {
     func testItAllowsYouToRetrieveAValueFromParent() {
         context.push()
 
-        let name = context["name"] as String!
+        let name = context["name"] as! String
         XCTAssertEqual(name, "Kyle")
     }
 
@@ -37,7 +37,7 @@ class ContextTests: XCTestCase {
         context.push()
         context["name"] = "Katie"
 
-        let name = context["name"] as String!
+        let name = context["name"] as! String
         XCTAssertEqual(name, "Katie")
     }
 
@@ -46,14 +46,14 @@ class ContextTests: XCTestCase {
         context["name"] = "Katie"
         context.pop()
 
-        let name = context["name"] as String!
+        let name = context["name"] as! String
         XCTAssertEqual(name, "Kyle")
     }
 
     func testItAllowsYouToPushADictionaryToTheStack() {
         context.push(["name": "Katie"])
 
-        let name = context["name"] as String!
+        let name = context["name"] as! String
         XCTAssertEqual(name, "Katie")
     }
 

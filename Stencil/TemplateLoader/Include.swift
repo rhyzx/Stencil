@@ -14,10 +14,10 @@ public class IncludeNode : Node {
         let bits = token.contents.componentsSeparatedByString("\"")
 
         if bits.count != 3 {
-            return .Error(error:NodeError(token: token, message: "Tag takes one argument, the template file to be included"))
+            return .Error(NodeError(token: token, message: "Tag takes one argument, the template file to be included"))
         }
 
-        return .Success(node:IncludeNode(templateName: bits[1]))
+        return .Success(IncludeNode(templateName: bits[1]))
     }
 
     public init(templateName:String) {

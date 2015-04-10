@@ -18,13 +18,13 @@ public class TokenParser {
     public typealias NodeList = [Node]
 
     public enum Result {
-        case Success(node: Node)
-        case Error(error: Stencil.Error)
+        case Success(Node)
+        case Error(Stencil.Error)
     }
 
     public enum Results {
-        case Success(nodes: NodeList)
-        case Error(error: Stencil.Error)
+        case Success(NodeList)
+        case Error(Stencil.Error)
     }
 
     private var tokens:[Token]
@@ -32,11 +32,11 @@ public class TokenParser {
 
     public init(tokens:[Token]) {
         self.tokens = tokens
-        registerTag("for", ForNode.parse)
-        registerTag("if", IfNode.parse)
-        registerTag("ifnot", IfNode.parse_ifnot)
-        registerTag("now", NowNode.parse)
-        registerTag("include", IncludeNode.parse)
+        registerTag("for", parser: ForNode.parse)
+        registerTag("if", parser: IfNode.parse)
+        registerTag("ifnot", parser: IfNode.parse_ifnot)
+        registerTag("now", parser: NowNode.parse)
+        registerTag("include", parser: IncludeNode.parse)
     }
 
     /// Registers a new template tag
@@ -47,7 +47,7 @@ public class TokenParser {
     /// Registers a simple template tag with a name and a handler
     public func registerSimpleTag(name:String, handler:((Context) -> (Stencil.Result))) {
         registerTag(name, parser: { (parser, token) -> TokenParser.Result in
-            return .Success(node:SimpleNode(handler: handler))
+            return .Success(SimpleNode(handler: handler))
         })
     }
 
@@ -73,7 +73,7 @@ public class TokenParser {
                 if let parse_until = parse_until {
                     if parse_until(parser: self, token: token) {
                         prependToken(token)
-                        return .Success(nodes:nodes)
+                        return .Success(nodes)
                     }
                 }
 
@@ -83,7 +83,7 @@ public class TokenParser {
                             case .Success(let node):
                                 nodes.append(node)
                             case .Error(let error):
-                                return .Error(error:error)
+                                return .Error(error)
                         }
                     }
                 }
@@ -92,7 +92,7 @@ public class TokenParser {
             }
         }
 
-        return .Success(nodes:nodes)
+        return .Success(nodes)
     }
 
     public func nextToken() -> Token? {

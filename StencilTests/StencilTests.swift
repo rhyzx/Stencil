@@ -58,7 +58,7 @@ class StencilTests: XCTestCase {
         let template = Template(templateString:templateString)
 
         template.parser.registerTag("custom") { parser, token in
-            return .Success(node:CustomNode())
+            return .Success(CustomNode())
         }
 
         let result = template.render()
